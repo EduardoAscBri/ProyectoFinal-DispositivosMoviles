@@ -14,7 +14,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL(Utilidades.CREATE_TABLA_RUTAS);//crear tablas si se crea la bd
+        //create tables when create the database
+        db.execSQL("CREATE TABLE User(idUser INTEGER PRIMARY KEY ASC, Name TEXT, LasstName TEXT, Email TEXT)");
+        db.execSQL("CREATE TABLE Account(idAccount INTEGER PRIMARY KEY ASC, idUser INTEGER, Name TEXT, Type TEXT, FOREIGN KEY(idUser) REFERENCES User(idUser))");
+        db.execSQL("CREATE TABLE Category(idCategory INTEGER PRIMARY KEY ASC, Name TEXT, Type TEXT, TransactionType TEXT)");
+        db.execSQL("CREATE TABLE Transact(idTransaction INTEGER PRIMARY KEY ASC, idOrigAccount INTEGER, idDestAccount INTEGER, idCategory INTEGER, Amount REAL, " +
+                "Concept TEXT, Date NUMERIC, LatLocation REAL, LonLocation REAL, IsAutoCharge INTEGER, " +
+                "FOREIGN KEY(idOrigAccount) REFERENCES User(idUser), FOREIGN KEY(idDestAccount) REFERENCES User(idUser), FOREIGN KEY(idCategory) REFERENCES Category(idCategory))");
+        db.execSQL("CREATE TABLE Charge(idCharge INTEGER PRIMARY KEY ASC, idOrgAccount INTEGER, idDestAccount INTEGER, idCategory INTEGER, Amount REAL, Concept TEXT, Frecuency INTEGER, Date NUMERIC," +
+                "FOREIGN KEY(idOrigAccount) REFERENCES User(idUser), FOREIGN KEY(idDestAccount) REFERENCES User(idUser), FOREIGN KEY(idCategory) REFERENCES Category(idCategory))");
     }
 
     @Override
