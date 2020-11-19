@@ -1,9 +1,9 @@
 package com.example.proyectofinal;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import androidx.annotation.Nullable;
 
 public class DatabaseManager extends SQLiteOpenHelper {
@@ -30,4 +30,103 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS rutas");
         onCreate(db);
     }
+
+    public Cursor ExpensesPerMonth(SQLiteDatabase conexion, String fechaInicio, String fechaFinal){
+        Cursor datos = null;
+
+        String query = "SELECT Account.Name, " +
+                "Transact.Amount, Transact.Concept, Transact.Date, Transact.LatLocation, Transact.LonLocation, " +
+                "Category.Name, Category.Type, Category.TransactionType " +
+                "FROM Transact " +
+                "LEFT JOIN Account " +
+                "ON Transact.idOrigAccount = Account.idAccount " +
+                "LEFT JOIN Category " +
+                "ON Transact.idCategory = Category.idCategory " +
+                "WHERE (Transact.IsAutCharge = 1) " +
+                "AND (Transact.Date BETWEEN " + fechaInicio + " AND " + fechaFinal + ")";
+
+        datos = conexion.rawQuery(query, null);
+
+        return datos;
+    }
+
+
+    public Cursor BalancePerMonth(SQLiteDatabase conexion, String fechaInicio, String fechaFinal){
+        Cursor datos = null;
+
+        String query = "SELECT Account.Name, " +
+                "Transact.Amount, Transact.Concept, Transact.Date, Transact.LatLocation, Transact.LonLocation, " +
+                "Category.Name, Category.Type, Category.TransactionType " +
+                "FROM Transact " +
+                "LEFT JOIN Account " +
+                "ON Transact.idOrigAccount = Account.idAccount " +
+                "LEFT JOIN Category " +
+                "ON Transact.idCategory = Category.idCategory " +
+                "WHERE (Transact.Date BETWEEN " + fechaInicio + " AND " + fechaFinal + ")";
+
+        datos = conexion.rawQuery(query, null);
+
+        return datos;
+    }
+
+
+    public Cursor BalancePerAccount(SQLiteDatabase conexion, Integer idAccount, String fechaInicio, String fechaFinal){
+        Cursor datos = null;
+
+        String query = "SELECT Account.Name, " +
+                "Transact.Amount, Transact.Concept, Transact.Date, Transact.LatLocation, Transact.LonLocation, " +
+                "Category.Name, Category.Type, Category.TransactionType " +
+                "FROM Transact " +
+                "LEFT JOIN Account " +
+                "ON Transact.idOrigAccount = Account.idAccount " +
+                "LEFT JOIN Category " +
+                "ON Transact.idCategory = Category.idCategory " +
+                "WHERE (Account.idAccount = " + idAccount.toString() + ") " +
+                "AND (Transact.Date BETWEEN " + fechaInicio + " AND " + fechaFinal + ")";
+
+        datos = conexion.rawQuery(query, null);
+
+        return datos;
+    }
+
+
+    public Cursor TransactionsPerCategory(SQLiteDatabase conexion, Integer idCategory, String fechaInicio, String fechaFinal){
+        Cursor datos = null;
+
+        String query = "SELECT Account.Name, " +
+                "Transact.Amount, Transact.Concept, Transact.Date, Transact.LatLocation, Transact.LonLocation, " +
+                "Category.Name, Category.Type, Category.TransactionType " +
+                "FROM Transact " +
+                "LEFT JOIN Account " +
+                "ON Transact.idOrigAccount = Account.idAccount " +
+                "LEFT JOIN Category " +
+                "ON Transact.idCategory = Category.idCategory " +
+                "WHERE (Category.idCategory = " + idCategory.toString() + ") " +
+                "AND (Transact.Date BETWEEN " + fechaInicio + " AND " + fechaFinal + ")";
+
+        datos = conexion.rawQuery(query, null);
+
+        return datos;
+    }
+
+
+    public Cursor TransactionsByCharges(SQLiteDatabase conexion, String fechaInicio, String fechaFinal){
+        Cursor datos = null;
+
+        String query = "SELECT Account.Name, " +
+                "Transact.Amount, Transact.Concept, Transact.Date, Transact.LatLocation, Transact.LonLocation, " +
+                "Category.Name, Category.Type, Category.TransactionType " +
+                "FROM Transact " +
+                "LEFT JOIN Account " +
+                "ON Transact.idOrigAccount = Account.idAccount " +
+                "LEFT JOIN Category " +
+                "ON Transact.idCategory = Category.idCategory " +
+                "WHERE (Transact.IsAutCharge = 0) " +
+                "AND (Transact.Date BETWEEN " + fechaInicio + " AND " + fechaFinal + ")";
+
+        datos = conexion.rawQuery(query, null);
+
+        return datos;
+    }
+
 }
