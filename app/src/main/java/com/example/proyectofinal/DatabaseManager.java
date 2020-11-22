@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-    SQLiteDatabase readableConnection;
-    SQLiteDatabase writableConnection;
+    public static SQLiteDatabase readableConnection;
+    public static SQLiteDatabase writableConnection;
 
     public DatabaseManager(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
