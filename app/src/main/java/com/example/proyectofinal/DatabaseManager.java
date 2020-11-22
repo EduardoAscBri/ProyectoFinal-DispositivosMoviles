@@ -4,12 +4,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
+
 import androidx.annotation.Nullable;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
+    SQLiteDatabase readableConnection;
+    SQLiteDatabase writableConnection;
+
     public DatabaseManager(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+        this.readableConnection = getReadableDatabase();
+        this.writableConnection = getWritableDatabase();
     }
 
     @Override
@@ -23,6 +30,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 "FOREIGN KEY(idOrigAccount) REFERENCES User(idUser), FOREIGN KEY(idDestAccount) REFERENCES User(idUser), FOREIGN KEY(idCategory) REFERENCES Category(idCategory))");
         db.execSQL("CREATE TABLE Charge(idCharge INTEGER PRIMARY KEY ASC, idOrgAccount INTEGER, idDestAccount INTEGER, idCategory INTEGER, Amount REAL, Concept TEXT, Frecuency INTEGER, Date NUMERIC," +
                 "FOREIGN KEY(idOrigAccount) REFERENCES User(idUser), FOREIGN KEY(idDestAccount) REFERENCES User(idUser), FOREIGN KEY(idCategory) REFERENCES Category(idCategory))");
+
     }
 
     @Override
@@ -30,6 +38,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS rutas");
         onCreate(db);
     }
+
 
     public Cursor ExpensesPerMonth(SQLiteDatabase conexion, String fechaInicio, String fechaFinal){
         Cursor datos = null;

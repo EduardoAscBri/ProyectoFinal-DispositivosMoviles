@@ -10,5 +10,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        DatabaseManager databaseManager = new DatabaseManager(this, "Banco.db", null, 1);
+
     }
 }
