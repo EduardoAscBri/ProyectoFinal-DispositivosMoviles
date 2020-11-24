@@ -31,6 +31,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE Charge(idCharge INTEGER PRIMARY KEY ASC, idOrgAccount INTEGER, idDestAccount INTEGER, idCategory INTEGER, Amount REAL, Concept TEXT, Frecuency INTEGER, Date NUMERIC," +
                 "FOREIGN KEY(idOrigAccount) REFERENCES User(idUser), FOREIGN KEY(idDestAccount) REFERENCES User(idUser), FOREIGN KEY(idCategory) REFERENCES Category(idCategory))");
 
+        db.execSQL("INSERT INTO User(Name,LasstName,Email) VALUES('Francisco','Villa Juarez', 'FranVillJua@gmail.com')");
+        db.execSQL("INSERT INTO Account(idUser, Name, Type) VALUES(0,'Account Cash 1','Cash')");
+        db.execSQL("INSERT INTO Category(Name, Type, TransactionType) VALUES('transferBetweenAccounts', 'Debit', 'Payment')");
     }
 
     @Override
